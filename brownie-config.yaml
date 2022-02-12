@@ -1,0 +1,17 @@
+dependencies:
+  - aave/protocol-v2@1.0.1
+compiler:
+  solc:
+    remappings:
+      - '@aave=aave/protocol-v2@1.0.1'
+
+networks:
+  mainnet-fork: 
+    weth_token: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+  rinkeby: 
+    weth_token: '0xc778417e063141139fce010982780140aa0cd5ab'
+wallets:
+  from-key: ${PRIVATE_KEY}
+dotenv: .env
+wallets: 
+  from_key: ${PRIVATE_KEY1}       
