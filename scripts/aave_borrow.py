@@ -4,6 +4,7 @@ from scripts.helpful_scripts import get_account
 from scripts.get_weth import get_weth
 from web3 import Web3
 
+
 FORKED_LOCAL_ENVIRONMENTS = ["mainnet-fork", "mainnet-fork-dev"]
 LOCAL_BLOCKCHAIN_ENVIRONMENTS = ["development", "ganache-local"]
 
@@ -24,6 +25,37 @@ def approve_erc20(amount, spender, erc20_address, account):
     tx.wait(1)
     print(f"Approved!!")
     return tx
+
+
+def get_borrowable_data(lending_pool, account):
+    (
+        totalCollateralETH,
+        totalDebtETH,
+        availableBorrowsETH,
+        currentLiquidationThreshold,
+        ltv,
+        healthFactor,
+    ) = lending_pool.getUserAccountData(account)
+    print(f"totalCollateralETH = {totalCollateralETH}")
+    print(f"totalDebtETH = {totalDebtETH}")
+    print(f"availableBorrowsETH = {availableBorrowsETH}")
+    print(f"currentLiquidationThreshold = {currentLiquidationThreshold}")
+    print(f"ltv = {ltv}")
+    print(f"healthFactor = {healthFactor}")
+
+    return (
+        float(Web3.fromWei(availableBorrowsETH, "ether")),
+        float(Web3.fromWei(totalDebtETH, "ether")),
+    )
+
+
+def get_asset_price(price_feed_address):
+    pricefeed = interface.AggregatorV3Interface(price_feed_address)
+    price = pricefeed.latestRoundData()[1]
+    print(f"price = {price}")
+    priceEth = float(Web3.fromWei(price, "ether"))
+    print(f"priceEth = {priceEth}")
+    return priceEth
 
 
 ## 0.1
@@ -48,18 +80,13 @@ def main():
     )
     tx.wait(1)
     print(f"Deposited")
+    (availableBorrowsETH, totalDebtETH) = get_borrowable_data(lending_pool, account)
+    print(
+        f"(availableBorrowsETH, totalDebtETH) = {(availableBorrowsETH, totalDebtETH)}"
+    )
 
-    (
-        totalCollateralETH,
-        totalDebtETH,
-        availableBorrowsETH,
-        currentLiquidationThreshold,
-        ltv,
-        healthFactor,
-    ) = lending_pool.getUserAccountData(account)
-    print(f"totalCollateralETH = {totalCollateralETH}")
-    print(f"totalDebtETH = {totalDebtETH}")
-    print(f"availableBorrowsETH = {availableBorrowsETH}")
-    print(f"currentLiquidationThreshold = {currentLiquidationThreshold}")
-    print(f"ltv = {ltv}")
-    print(f"healthFactor = {healthFactor}")
+    print(f" Let's borrow!!")
+    ### DAI in terms of ETH
+    dai_eth_price = get_asset_price(
+        config["networks"][network.show_active()]["dai_eth_price_feed"]
+    )
