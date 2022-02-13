@@ -42,3 +42,9 @@ def main():
 
     ## Approve sending ERC-20 Tokens
     approve_erc20(AMOUNT, lending_pool.address, erc20_address, account)
+    print(f"Depositing...")
+    tx = lending_pool.deposit(
+        erc20_address, AMOUNT, account.address, 0, {"from": account}
+    )
+    tx.wait(1)
+    print(f"Deposited")
