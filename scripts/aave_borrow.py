@@ -58,6 +58,24 @@ def get_asset_price(price_feed_address):
     return priceEth
 
 
+def repay_all(amount, lending_pool, account):
+    approve_erc20(
+        amount,
+        lending_pool,
+        config["networks"][network.show_active()]["dai_token"],
+        account,
+    )
+    repay_tx = lending_pool.repay(
+        config["networks"][network.show_active()]["dai_token"],
+        amount,
+        1,
+        account.address,
+        {"from": account},
+    )
+    repay_tx.wait(1)
+    print(f"Repay already")
+
+
 ## 0.1
 AMOUNT = Web3.toWei(0.1, "ether")
 
@@ -98,11 +116,21 @@ def main():
         Web3.toWei(amount_dai_to_borrow, "ether"),
         1,
         0,
-        account,
+        account.address,
         {"from": account},
     )
     borrow_tx.wait(1)
     (availableBorrowsETH, totalDebtETH) = get_borrowable_data(lending_pool, account)
     print(
-        f"(availableBorrowsETH, totalDebtETH) = {(availableBorrowsETH, totalDebtETH)}"
+        f"Borrowed DAI already (availableBorrowsETH, totalDebtETH) = {(availableBorrowsETH, totalDebtETH)}"
+    )
+
+    print(f"Repaying...")
+    repay_all(Web3.toWei(amount_dai_to_borrow, "ether"), lending_pool, account)
+    (availableBorrowsETH, totalDebtETH) = get_borrowable_data(lending_pool, account)
+    print(
+        f"Borrowed DAI already (availableBorrowsETH, totalDebtETH) = {(availableBorrowsETH, totalDebtETH)}"
+    )
+    print(
+        f"Deposited, Borrowed and Repayed - ETH, WETH, DAI - aave, chainlink, brownie"
     )
