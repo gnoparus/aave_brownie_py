@@ -8,8 +8,12 @@ compiler:
 networks:
   mainnet-fork: 
     weth_token: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+    lending_pool_addresses_provider: '0xB53C1a33016B2DC2fF3653530bfF1848a515c8c5'
   rinkeby: 
     weth_token: '0xc778417e063141139fce010982780140aa0cd5ab'
+  kovan:
+    weth_token: '0xA61ca04DF33B72b235a8A28CfB535bb7A5271B70'
+    lending_pool_addresses_provider: '0x88757f2f99175387aB4C6a4b3067c77A695b0349'
 wallets:
   from-key: ${PRIVATE_KEY}
 dotenv: .env
