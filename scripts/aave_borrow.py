@@ -48,3 +48,18 @@ def main():
     )
     tx.wait(1)
     print(f"Deposited")
+
+    (
+        totalCollateralETH,
+        totalDebtETH,
+        availableBorrowsETH,
+        currentLiquidationThreshold,
+        ltv,
+        healthFactor,
+    ) = lending_pool.getUserAccountData(account)
+    print(f"totalCollateralETH = {totalCollateralETH}")
+    print(f"totalDebtETH = {totalDebtETH}")
+    print(f"availableBorrowsETH = {availableBorrowsETH}")
+    print(f"currentLiquidationThreshold = {currentLiquidationThreshold}")
+    print(f"ltv = {ltv}")
+    print(f"healthFactor = {healthFactor}")
