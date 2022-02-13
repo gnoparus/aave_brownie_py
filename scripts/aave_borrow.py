@@ -90,3 +90,19 @@ def main():
     dai_eth_price = get_asset_price(
         config["networks"][network.show_active()]["dai_eth_price_feed"]
     )
+    amount_dai_to_borrow = (1 / dai_eth_price) * availableBorrowsETH * 0.95
+    print(f"amount_dai_to_borrow = {amount_dai_to_borrow}")
+
+    borrow_tx = lending_pool.borrow(
+        config["networks"][network.show_active()]["dai_token"],
+        Web3.toWei(amount_dai_to_borrow, "ether"),
+        1,
+        0,
+        account,
+        {"from": account},
+    )
+    borrow_tx.wait(1)
+    (availableBorrowsETH, totalDebtETH) = get_borrowable_data(lending_pool, account)
+    print(
+        f"(availableBorrowsETH, totalDebtETH) = {(availableBorrowsETH, totalDebtETH)}"
+    )

@@ -9,12 +9,14 @@ compiler:
 networks:
   mainnet-fork: 
     weth_token: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'
+    dai_token: '0x6b175474e89094c44da98b954eedeac495271d0f'
     lending_pool_addresses_provider: '0xB53C1a33016B2DC2fF3653530bfF1848a515c8c5'
-    dai_eth_price_feed: '0x773616e4d11a78f511299002da57a0a94577f1f4'
+    dai_eth_price_feed: '0x773616e4d11a78f511299002da57a0a94577f1f4'    
   rinkeby: 
     weth_token: '0xc778417e063141139fce010982780140aa0cd5ab'
   kovan:
     weth_token: '0xA61ca04DF33B72b235a8A28CfB535bb7A5271B70'
+    dai_token: '0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD'
     lending_pool_addresses_provider: '0x88757f2f99175387aB4C6a4b3067c77A695b0349'
     dai_eth_price_feed: '0x22B58f1EbEDfCA50feF632bD73368b2FdA96D541'    
 wallets:
